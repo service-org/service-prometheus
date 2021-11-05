@@ -25,5 +25,5 @@ class PrometheusMiddleware(DispatcherMiddleware):
         @param producer: 服务提供者
         @param kwargs: 命名参数
         """
-        mounts = {'/metrics', make_wsgi_app()}
+        mounts = {'/metrics': make_wsgi_app()}
         DispatcherMiddleware.__init__(self, wsgi_app=wsgi_app, producer=producer, mounts=mounts)
