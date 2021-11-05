@@ -96,7 +96,9 @@ class Prometheus(Dependency):
         driver = context.original_entrypoint.name
         request_id = context.worker_request_id
         endpoint = context.original_entrypoint.object_name
-        start_time = self.request_latency_seconds_map.pop(request_id)
-        seconds = default_timer() - start_time
-        self.req_latency_seconds.labels(server, driver, endpoint, status).set(seconds)
+        self.req_latency_seconds.labels(
+            server, driver, endpoint, status
+        ).observe(
+            default_timer() - self.request_latency_seconds_map.pop(request_id)
+        )
         self.req_current_count.labels(server, driver, endpoint, status).inc()
